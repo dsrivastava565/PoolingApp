@@ -14,12 +14,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='startpooling',
             name='latitude',
-            field=models.DecimalField(decimal_places=10, default=Decimal('0.0000'), max_digits=30),
+            field=models.CharField(decimal_places=10, default=Decimal('0.0000'), max_digits=30),
         ),
         migrations.AddField(
             model_name='startpooling',
             name='longitude',
-            field=models.DecimalField(decimal_places=10, default=Decimal('0.0000'), max_digits=30),
+            field=models.CharField(decimal_places=10, default=Decimal('0.0000'), max_digits=30),
         ),
         migrations.AddField(
             model_name='startpooling',
@@ -29,11 +29,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='startpooling',
             name='time_end',
-            field=models.BigIntegerField(blank=True, null=True),
+            field=models.CharField(blank=True, null=True),
         ),
         migrations.AlterField(
             model_name='startpooling',
             name='time_start',
-            field=models.BigIntegerField(null=True),
+            field=models.CharField(null=True),
         ),
     ]

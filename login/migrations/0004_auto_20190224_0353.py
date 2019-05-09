@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='startpooling',
             name='latitude',
-            field=models.DecimalField(decimal_places=5, default=Decimal('0.0000'), max_digits=30),
+            field=models.CharField(decimal_places=5, default=Decimal('0.0000'), max_digits=30),
         ),
         migrations.AlterField(
             model_name='startpooling',
             name='longitude',
-            field=models.DecimalField(decimal_places=5, default=Decimal('0.0000'), max_digits=30),
+            field=models.CharField(decimal_places=5, default=Decimal('0.0000'), max_digits=30),
         ),
     ]

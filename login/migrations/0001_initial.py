@@ -37,8 +37,8 @@ class Migration(migrations.Migration):
             name='startPooling',
             fields=[
                 ('startPoolingId', models.AutoField(primary_key=True, serialize=False)),
-                ('time_start', models.TimeField(blank=True, null=True)),
-                ('time_end', models.TimeField(blank=True, null=True)),
+                ('time_start', models.CharField(blank=True, null=True)),
+                ('time_end', models.CharField(blank=True, null=True)),
                 ('carPooled', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='login.CarDetails')),
             ],
         ),
