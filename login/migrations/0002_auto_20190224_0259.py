@@ -14,9 +14,9 @@ class Migration(migrations.Migration):
             model_name='startpooling',
             name='time_end',
         ),
-        migrations.AlterField(
-            model_name='startpooling',
-            name='time_start',
-            field=models.CharField(null=True),
-        ),
+        # migrations.AlterField(
+        #     model_name='startpooling',
+        #     name='time_start',
+        #     field=models.IntegerField(null=True),
+        # ),
     ]
