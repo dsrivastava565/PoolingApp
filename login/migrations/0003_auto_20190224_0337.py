@@ -34,6 +34,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='startpooling',
             name='time_start',
-            field=models.BigIntegerField(null=True),
+            field=models.CharField(max_length=100,null=True),
         ),
     ]
