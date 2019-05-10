@@ -78,7 +78,7 @@ def addPool(request):
                 check_for_one_pooling_before = list(startPooling.objects.filter(carPooled=check_for_car_user[0].get('cardetailsId'),pooledbyid=data['uniq_id'],status='INACTIVE'))
                 if check_for_one_pooling_before:
                     print("chwbdsns,da,sn")
-                    startPooling.objects.filter(carPooled=check_for_car_user[0].get('cardetailsId'),pooledbyid=data['uniq_id'],status='INACTIVE').update(status='ACTIVE')
+                    startPooling.objects.filter(carPooled=check_for_car_user[0].get('cardetailsId'),pooledbyid=data['uniq_id'],status='INACTIVE').update(time_start=data['time_start'],time_end = data['time_end'],latitude=data['latitude'],longitude=data['longitude'],status='ACTIVE',seats=data['carseats'])
                     return JsonResponse({'message': 'Successssfuly updated'}, safe=False, status=201)
                 else:
                     user_pooling = MyUser.objects.get(uniq_id=data['uniq_id'])
@@ -209,15 +209,20 @@ def getcurrentPools(request):
 
 def endmypool(request):
     if request.method=='GET':
-        check_for_active = list(userPooling.objects.filter(userPooled=request.GET['uniq_id'],status='ACTIVE'))
+        check_for_active = list(userPooling.objects.filter(userPooled=request.GET['uniq_id'],status='ACTIVE').values('poolingwithid'))
         if check_for_active:
             query = userPooling.objects.filter(userPooled=request.GET['uniq_id']).update(status = 'INACTIVE')
-            if query:
+            check_seats = startPooling.objects.filter(startPoolingId=check_for_active[0].get('poolingwithid')).values('seats')
+            seats = check_seats[0].get('seats')
+            query2 = startPooling.objects.filter(startPoolingId=check_for_active[0].get('poolingwithid')).update(seats=seats+1)
+            if query and query2:
                 return JsonResponse({'message': 'Successfully Endpool'}, safe=False, status=200)
             else:
                 return JsonResponse({'message': ' Some error occured'}, safe=False, status=401)
         else:
             return JsonResponse({'message':'User is already inactive'},safe=False,status=400)
+    else:
+        return JsonResponse({'message':'Wrong Request Type'},safe=False,status=400)
 
 
 def endpooledcar(request):
