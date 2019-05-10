@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^profile/$',views.profile, name='profile'),
     url(r'^getalldetails/$', views.getAllDetails, name='getpooldetails'),
     url(r'^addUsertoPool/$', views.addUsertoPool, name='addUsertoPool'),
-    url(r'^getcurrentPools/$', views.getcurrentPools, name='getcurrentPools'),
+    url(r'^getactivePools/$', views.getactivePools, name='getcurrentPools'),
     url(r'^endmypooling/$', views.endmypool, name='endpool'),
     url(r'^endmypooledcar/$', views.endpooledcar, name='endmypooledcar'),
 ]

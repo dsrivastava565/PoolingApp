@@ -190,22 +190,38 @@ def addUsertoPool(request):
     else:
         return JsonResponse({'message': 'Wrong Request type'}, safe=False, status=400)
 
-def getcurrentPools(request):
-    data_values = {}
+def getactivePools(request):
+    data_values = []
     if request.method=='GET':
-        query = list(userPooling.objects.filter(userPooled=request.GET['user_id']).values('status'))
-        if len(query)!=0:
-            data_values = {'status': query[0].get('status')}
-            return JsonResponse(data=data_values, safe=False, status=200)
+        check_for_user = MyUser.objects.filter(uniq_id=request.GET['uniq_id'])
+        if check_for_user:
+            check_poolers=startPooling.objects.filter(status='ACTIVE').values('latitude','longitude','time_start','time_end','seats','pooledbyid','carPooled')
+            for a in check_poolers:
+                getpoolerinfo = list(MyUser.objects.filter(uniq_id=a.get('pooledbyid')).values('name','gender','email','mobile'))
+                a['pooler_info']=getpoolerinfo[0]
+                car_details = list(CarDetails.objects.filter(cardetailsId=a.get('carPooled')).values('carname','carNumber','cardetailsId'))
+                a['car_details'] = car_details[0]
+                print(a['car_details'])
+                data_values.append({'pooler':a})
+            return JsonResponse(data=data_values, safe=False, status=404)
         else:
-            cardetailid = CarDetails.objects.get(addedBy=request.GET['user_id'])
-            print("hello")
-            query3 = list(startPooling.objects.filter(carPooled=cardetailid).values('status'))
-            if len(query3)!=0:
-                print(query3)
-                data_values = {'status': query3[0].get('status')}
-                return JsonResponse(data=data_values, safe=False, status=200)
+            return JsonResponse({'message': 'User is not found'}, safe=False, status=404)
+    else:
+        return JsonResponse({'message':'Wrong Request Type'},safe=False,status=400)
+
+        # query = list(userPooling.objects.filter(userPooled=request.GET['uniq_id']).values('status'))
+        # if len(query)!=0:
+        #     data_values = {'status': query[0].get('status')}
+        #     return JsonResponse(data=data_values, safe=False, status=200)
         # else:
+        #     cardetailid = CarDetails.objects.get(addedBy=request.GET['uniq_id'])
+        #     print("hello")
+        #     query3 = list(startPooling.objects.filter(carPooled=cardetailid).values('status'))
+        #     if len(query3)!=0:
+        #         print(query3)
+        #         data_values = {'status': query3[0].get('status')}
+        #         return JsonResponse(data=data_values, safe=False, status=200)
+        # # else:
         #     data_values = {'status': 'INACTIVE'}
         #     return JsonResponse(data=data_values, safe=False, status=200)
 
