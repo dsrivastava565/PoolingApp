@@ -45,7 +45,9 @@ def register(request):
             return JsonResponse({'message':'username Existed'},safe =False,status=201)
         else:
             query = MyUser.objects.create(name=data['name'],username=data['username'], password=data['password'],email=data['email'],gender=data['gender'],mobile=data['mobile'])
-            return JsonResponse({'message': 'successfully Inserted'}, safe=False, status=201)
+            query2 = list(MyUser.objects.filter(username=data['username']).values('uniq_id'))
+            data_values = {'message': 'successfully Inserted','uniq_id':query2[0].get('uniq_id')}
+            return JsonResponse(data=data_values, safe=False, status=201)
 
 
 def addCar(request):
